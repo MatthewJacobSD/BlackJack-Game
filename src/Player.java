@@ -1,13 +1,11 @@
-import javax.smartcardio.Card;
 import java.util.*;
 public class Player {
-    private String username;
-    private int playerNumOfCards;
-    ArrayList<Card> playerHand;
+    private final String username;
+    private final ArrayList<Card> playerHand;
 
     public Player(String name){
         this.username = name;
-        playerHand = new ArrayList<Card>();
+        playerHand = new ArrayList<>();
     }
 
     public String getUsername(){
@@ -16,25 +14,29 @@ public class Player {
 
     public void addCard(Card card){
         playerHand.add(card);
-        this.playerNumOfCards++;
     }
 
     public int getHandSum(){
-        int totSum = 0;
-        for(Card countSum: playerHand){
-            totSum = totSum + countSum.getRank();
+        int totHandSum = 0;
+        for(Card card: playerHand){
+            totHandSum += card.getRank().getRankValue();
         }
-        return totSum;
+        return totHandSum;
     }
 
-    public void getPlayerHand(boolean hideCards){
-        System.out.println(this.username + "'s current hand.");
-        for(int c = 0; c < playerNumOfCards; c++){
+    public boolean getPlayerHand(boolean hideCards){
+        System.out.println(STR."\{this.username}'s current hand.");
+        for(int c = 0; c < playerHand.size(); c++){
             if(c == 0 && !hideCards){
                 System.out.println("[Hidden card]");
             } else {
-                System.out.println(playerHand.get(c).toString());
+                System.out.println(STR."\{playerHand.get(c).toString()}---------------------\n");
             }
         }
+        return hideCards;
+    }
+
+    public Card getLastDrawnCard() {
+        return playerHand.getLast();
     }
 }

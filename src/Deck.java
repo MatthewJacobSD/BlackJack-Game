@@ -1,37 +1,39 @@
 import java.util.*;
 public class Deck {
 
-    private Card[] deck;
-    private static final Random r = new Random();
-
-    private int nowCard;
-    private static int cardNum = 52;
+    ArrayList<Card> cards;
 
     public Deck() {
-        Rank[] rank = {Rank.ace, Rank.deuce, Rank.three, Rank.four, Rank.five, Rank.six, Rank.seven, Rank.eight, Rank.nine, Rank.ten, Rank.jack, Rank.queen, Rank.king};
-        Suit[] suit = {Suit.clubsGrp, Suit.heartsGrp, Suit.diamondsGrp, Suit.spadesGrp};
-        deck = new Card[cardNum];
-        nowCard = 0;
+        cards = new ArrayList<>();
+        Rank[] rank = {Rank.Ace, Rank.Deuce, Rank.Three, Rank.Four, Rank.Five, Rank.Six, Rank.Seven, Rank.Eight, Rank.Nine, Rank.Ten, Rank.Jack, Rank.Queen, Rank.King};
+        Suit[] suit = {Suit.Hearts, Suit.Spades, Suit.Diamonds, Suit.Clubs};
 
-        for (int first = 0; first < cardNum; first++) {
-            int second = r.nextInt(cardNum);
-
-            Card temp = deck[first];
-            deck[first] = deck[second];
-            deck[second] = temp;
+        for (Suit s : suit) {
+            for (Rank r : rank) {
+                cards.add(new Card(r, s));
+            }
         }
     }
 
-    public Card dealNxtCard(){
-        Card topCard = this.deck[0];
+    public void shuffle() {
+        Collections.shuffle(cards);
+    }
 
-        for(int nowCard = 1; nowCard < cardNum; nowCard++) {
-            this.deck[nowCard] = this.deck[nowCard - 1];
+    public Card draw() {
+        return cards.removeFirst();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cards.size(); i++) {
+            sb.append(i + 1);
+            sb.append('/');
+            sb.append(cards.size());
+            sb.append(' ');
+            sb.append(cards.get(i));
+            sb.append('\n');
         }
-        this.deck[cardNum - 1] = null;
-
-        cardNum--;
-
-        return topCard;
+        return sb.toString();
     }
 }
